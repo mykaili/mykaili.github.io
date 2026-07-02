@@ -1,0 +1,165 @@
+/* Base Reset & Variables */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-hover: #0ea5e9;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* Navbar & View Switcher */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid #334155;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.nav-toggle button {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.nav-toggle button:first-child {
+    border-radius: 4px 0 0 4px;
+}
+
+.nav-toggle button:last-child {
+    border-radius: 0 4px 4px 0;
+    border-left: none;
+}
+
+.nav-toggle button.active, .nav-toggle button:hover {
+    background-color: var(--accent);
+    color: var(--bg-color);
+}
+
+/* Layout Container */
+.container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.hero {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* Grid & Cards Layout */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.card {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.card h3 {
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.card p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+/* Utility Elements */
+.btn {
+    display: inline-block;
+    background-color: var(--accent);
+    color: var(--bg-color);
+    padding: 0.5rem 1.25rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background-color: var(--accent-hover);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Dashboard Specific Styles */
+.large-text {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0.5rem 0;
+}
+
+.links-list, .todo-list {
+    list-style: none;
+}
+
+.links-list li {
+    margin-bottom: 0.75rem;
+}
+
+.links-list a {
+    color: var(--text-main);
+    text-decoration: none;
+}
+
+.links-list a:hover {
+    color: var(--accent);
+}
+
+.todo-list li {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
