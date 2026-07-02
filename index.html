@@ -1,9 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Hub | Portfolio & Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Hello World! My custom website is working.</h1>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">DevHub</div>
+        <div class="nav-toggle">
+            <button id="view-portfolio-btn" class="active">Portfolio</button>
+            <button id="view-dashboard-btn">Dashboard</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <!-- ================= PORTFOLIO SECTION ================= -->
+        <section id="portfolio-view" class="view-section">
+            <header class="hero">
+                <h1>Hi, I'm a Software Engineer</h1>
+                <p>Building clean, scalable solutions and efficient digital experiences.</p>
+            </header>
+
+            <h2>Featured Projects</h2>
+            <div class="grid">
+                <!-- Project 1 -->
+                <div class="card">
+                    <h3>Project Name One</h3>
+                    <p>A brief description of what this project does, the tech stack used (e.g., Python, SQL), and the problem it solves.</p>
+                    <a href="#" class="btn">View Code</a>
+                </div>
+                <!-- Project 2 -->
+                <div class="card">
+                    <h3>Project Name Two</h3>
+                    <p>Another project showcase. Perfect for displaying automation scripts, web apps, or open-source contributions.</p>
+                    <a href="#" class="btn">View Live</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DASHBOARD SECTION ================= -->
+        <section id="dashboard-view" class="view-section hidden">
+            <header class="hero">
+                <h1>Personal Command Center</h1>
+                <p>Track your daily metrics, focus goals, and quick links.</p>
+            </header>
+
+            <div class="grid">
+                <!-- Widget 1: Clock & Date -->
+                <div class="card widget">
+                    <h3>Current Time</h3>
+                    <div id="clock" class="large-text">00:00:00</div>
+                    <p id="date">Loading date...</p>
+                </div>
+
+                <!-- Widget 2: Quick Links -->
+                <div class="card widget">
+                    <h3>Quick Launch</h3>
+                    <ul class="links-list">
+                        <li><a href="https://github.com" target="_blank">→ GitHub</a></li>
+                        <li><a href="https://tradingview.com" target="_blank">→ TradingView</a></li>
+                        <li><a href="https://coursera.org" target="_blank">→ Coursera Learning</a></li>
+                    </ul>
+                </div>
+
+                <!-- Widget 3: Daily Focus / Todo -->
+                <div class="card widget">
+                    <h3>Today's Focus</h3>
+                    <ul class="todo-list">
+                        <li><input type="checkbox"> Complete project module</li>
+                        <li><input type="checkbox"> Review market charts</li>
+                        <li><input type="checkbox"> Read 30 minutes</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
