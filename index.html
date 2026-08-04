@@ -1,71 +1,825 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mykaili Official Website</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Mykaili official website</title>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg-black: #080808;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-bg-hover: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-border-hover: rgba(255, 255, 255, 0.3);
+            --glass-blur: blur(16px);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- Canvas Background --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1100px;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 12px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* --- Hero Section & Dynamic Scroll Image --- */
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 40px;
+            position: relative;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            will-change: transform, opacity, filter;
+            transition: transform 0.1s linear, opacity 0.1s linear, filter 0.1s linear;
+        }
+
+        .hero-image {
+            width: 40%;
+            height: auto;
+            max-height: 550px;
+            object-fit: cover;
+            border-radius: 24px;
+            border: 0px solid var(--glass-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            max-width: 650px;
+            font-weight: 300;
+            margin-bottom: 35px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            will-change: transform;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #000000;
+            border: 1px solid #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #e4e4e7;
+        }
+
+        .btn-glass {
+            background: var(--glass-bg);
+            color: #ffffff;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .btn-glass:hover {
+            background: var(--glass-bg-hover);
+            border-color: var(--glass-border-hover);
+        }
+
+        /* --- Main Layout --- */
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        /* --- Glass Grid Cards & 3D Interactive Styles --- */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            perspective: 1000px;
+        }
+
+        .glass-card,
+        .showcase-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 30px;
+            transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.1s ease-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transform-style: preserve-3d;
+            overflow: hidden;
+        }
+
+        /* Radial Mouse Tracking Glow Highlight */
+        .glass-card::before,
+        .showcase-card::before {
+            content: "";
+            position: absolute;
+            top: var(--mouse-y, -100px);
+            left: var(--mouse-x, -100px);
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            border-radius: 50%;
+        }
+
+        .glass-card:hover::before,
+        .showcase-card:hover::before {
+            opacity: 1;
+        }
+
+        .glass-card:hover,
+        .showcase-card:hover {
+            background: var(--glass-bg-hover);
+            border-color: var(--glass-border-hover);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+            transform: translateZ(20px);
+        }
+
+        .card-title,
+        .showcase-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            transform: translateZ(15px);
+        }
+
+        .card-desc,
+        .showcase-body {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            transform: translateZ(10px);
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+            transform: translateZ(15px);
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #d4d4d8;
+        }
+
+        /* --- Showcase / Detailed Grid --- */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            perspective: 1000px;
+        }
+
+        .showcase-card {
+            padding: 32px;
+        }
+
+        .showcase-category {
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            transform: translateZ(10px);
+        }
+
+        /* --- Scroll Reveal Animations --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Contact / Footer --- */
+        footer {
+            padding: 80px 0 40px;
+            border-top: 1px solid var(--glass-border);
+            background: linear-gradient(180deg, rgba(8, 8, 8, 0) 0%, rgba(18, 18, 18, 0.8) 100%);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 24px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            transition: var(--transition);
+            text-decoration: none;
+            will-change: transform;
+        }
+
+        .social-btn:hover {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            header {
+                padding-top: 100px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+
+            .hero-image-wrapper {
+                max-width: 320px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <nav class="navbar">
-        <div class="logo">DevHub</div>
-        <div class="nav-toggle">
-            <button id="view-portfolio-btn" class="active">Portfolio</button>
-            <button id="view-dashboard-btn">Dashboard</button>
-        </div>
+
+    <!-- Interactive Particle Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation Header -->
+    <nav>
+        <div class="logo">Mykaili</div>
+        <ul class="nav-links">
+            <li><a href="#store" class="magnetic-target">Store</a></li>
+            <li><a href="#music" class="magnetic-target">Music</a></li>
+            <li><a href="#work" class="magnetic-target">Work</a></li>
+            <li><a href="#markets" class="magnetic-target">Forex</a></li>
+        </ul>
+        <a href="#contact" class="btn btn-glass magnetic-target" style="padding: 8px 18px; font-size: 0.85rem;">Let's
+            Talk</a>
     </nav>
 
-    <main class="container">
-        <section id="portfolio-view" class="view-section">
-            <header class="hero">
-                <h1>Hi, I'm a Software Engineer</h1>
-                <p>Building clean, scalable solutions and efficient digital experiences.</p>
-            </header>
-            <h2>Featured Projects</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Project Name One</h3>
-                    <p>A brief description of what this project does, the tech stack used (e.g., Python, SQL), and the problem it solves.</p>
-                    <a href="#" class="btn">View Code</a>
-                </div>
-                <div class="card">
-                    <h3>Project Name Two</h3>
-                    <p>Another project showcase. Perfect for displaying automation scripts, web apps, or open-source contributions.</p>
-                    <a href="#" class="btn">View Live</a>
-                </div>
+    <div class="container">
+        <!-- Hero Section -->
+        <header id="about">
+            <div class="hero-image-wrapper" id="scroll-hero-img">
+                <img src="IMG_9952.png" alt="Katende Micheal" class="hero-image">
             </div>
-        </section>
-        <section id="dashboard-view" class="view-section hidden">
-            <header class="hero">
-                <h1>Personal Command Center</h1>
-                <p>Track your daily metrics, focus goals, and quick links.</p>
-            </header>
+            <p class="hero-subtitle reveal">
+                A personal space showcasing specialized initiatives in software systems, financial market dynamics,
+                audio production, and social impact.
+            </p>
+            <div class="cta-buttons reveal">
+                <a href="#work" class="btn btn-primary magnetic-target">
+                    View Portfolio <i data-lucide="arrow-right"></i>
+                </a>
+                <a href="#fields" class="btn btn-glass magnetic-target">
+                    Explore Fields
+                </a>
+            </div>
+        </header>
 
-            <div class="grid">
-                <div class="card widget">
-                    <h3>Current Time</h3>
-                    <div id="clock" class="large-text">00:00:00</div>
-                    <p id="date">Loading date...</p>
+        <!-- Fields / Pillars Section -->
+        <section id="fields" class="reveal">
+            <div class="section-header">
+                <span class="section-tag">Core Disciplines</span>
+                <h2 class="section-title">Areas of Operation</h2>
+            </div>
+
+            <div class="grid-4">
+                <!-- Computing -->
+                <div class="glass-card tilt-card">
+                    <div>
+                        <div class="card-icon">
+                            <i data-lucide="code-2"></i>
+                        </div>
+                        <h3 class="card-title">Computing & Tech</h3>
+                        <p class="card-desc">
+                            Building clean front-end interfaces, custom web systems, smart home automation networks, and
+                            practical security architecture.
+                        </p>
+                    </div>
+                    <div class="tag-container">
+                        <span class="tag">Web Dev</span>
+                        <span class="tag">System Design</span>
+                        <span class="tag">Cybersecurity</span>
+                    </div>
                 </div>
-                <div class="card widget">
-                    <h3>Quick Launch</h3>
-                    <ul class="links-list">
-                        <li><a href="https://github.com" target="_blank">→ GitHub</a></li>
-                        <li><a href="https://tradingview.com" target="_blank">→ TradingView</a></li>
-                        <li><a href="https://coursera.org" target="_blank">→ Coursera Learning</a></li>
-                    </ul>
+
+                <!-- Finance -->
+                <div class="glass-card tilt-card">
+                    <div>
+                        <div class="card-icon">
+                            <i data-lucide="trending-up"></i>
+                        </div>
+                        <h3 class="card-title">Finance & Markets</h3>
+                        <p class="card-desc">
+                            Analyzing technical market structures, formulating mathematically disciplined risk
+                            strategies, and evaluating asset behavior.
+                        </p>
+                    </div>
+                    <div class="tag-container">
+                        <span class="tag">Technical Analysis</span>
+                        <span class="tag">Risk Management</span>
+                        <span class="tag">Macro Economics</span>
+                    </div>
                 </div>
-                <div class="card widget">
-                    <h3>Today's Focus</h3>
-                    <ul class="todo-list">
-                        <li><input type="checkbox"> Complete project module</li>
-                        <li><input type="checkbox"> Review market charts</li>
-                        <li><input type="checkbox"> Read 30 minutes</li>
-                    </ul>
+
+                <!-- Entertainment -->
+                <div class="glass-card tilt-card">
+                    <div>
+                        <div class="card-icon">
+                            <i data-lucide="music"></i>
+                        </div>
+                        <h3 class="card-title">Entertainment & Music</h3>
+                        <p class="card-desc">
+                            Crafting melodic trap arrangements, sound design, chord theory, and digital audio production
+                            within modern DAWs.
+                        </p>
+                    </div>
+                    <div class="tag-container">
+                        <span class="tag">Audio Production</span>
+                        <span class="tag">FL Studio</span>
+                        <span class="tag">Arrangement</span>
+                    </div>
+                </div>
+
+                <!-- Charity -->
+                <div class="glass-card tilt-card">
+                    <div>
+                        <div class="card-icon">
+                            <i data-lucide="heart"></i>
+                        </div>
+                        <h3 class="card-title">Charity & Impact</h3>
+                        <p class="card-desc">
+                            Leveraging digital platforms, grassroots initiatives, and technical tools to empower
+                            communities and support local causes.
+                        </p>
+                    </div>
+                    <div class="tag-container">
+                        <span class="tag">Community Action</span>
+                        <span class="tag">Non-Profit Work</span>
+                        <span class="tag">Social Impact</span>
+                    </div>
                 </div>
             </div>
         </section>
-    </main>
-    <script src="script.js"></script>
+
+        <!-- Featured Projects / Case Studies -->
+        <section id="work" class="reveal">
+            <div class="section-header">
+                <span class="section-tag">Case Studies</span>
+                <h2 class="section-title">Featured Highlights</h2>
+            </div>
+
+            <div class="showcase-grid">
+                <!-- Project 1 -->
+                <div class="showcase-card tilt-card">
+                    <div class="showcase-category">Computing & Automation</div>
+                    <h3 class="showcase-title">Centralized Smart Home Network</h3>
+                    <p class="showcase-body">
+                        Engineered an automated local controller running on mini-PC architecture to centralize bandwidth
+                        optimization, network security monitoring, and smart devices.
+                    </p>
+                    <div class="tag-container">
+                        <span class="tag">Networking</span>
+                        <span class="tag">IoT</span>
+                        <span class="tag">System Design</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="showcase-card tilt-card">
+                    <div class="showcase-category">Quantitative Finance</div>
+                    <h3 class="showcase-title">Market Structure & Compounding Framework</h3>
+                    <p class="showcase-body">
+                        Developed structured compounding plans and multi-timeframe liquidity analysis techniques
+                        tailored for volatile financial instruments.
+                    </p>
+                    <div class="tag-container">
+                        <span class="tag">Chart Analysis</span>
+                        <span class="tag">Capital Growth</span>
+                        <span class="tag">XAUUSD</span>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="showcase-card tilt-card">
+                    <div class="showcase-category">Digital Audio</div>
+                    <h3 class="showcase-title">Melodic Trap Instrumental Production</h3>
+                    <p class="showcase-body">
+                        Designed complex chord progressions, custom synthesizer patches, and vocal chop arrangements
+                        targeting modern melodic soundscapes.
+                    </p>
+                    <div class="tag-container">
+                        <span class="tag">Sound Design</span>
+                        <span class="tag">Composition</span>
+                        <span class="tag">Mixing</span>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="showcase-card tilt-card">
+                    <div class="showcase-category">Charity & Community</div>
+                    <h3 class="showcase-title">Save & Heal Digital Platform</h3>
+                    <p class="showcase-body">
+                        Assisted in establishing, managing, and maintaining digital web infrastructure to facilitate
+                        community engagement and support outreach operations.
+                    </p>
+                    <div class="tag-container">
+                        <span class="tag">Web Hosting</span>
+                        <span class="tag">Outreach</span>
+                        <span class="tag">Non-Profit</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer / Contact -->
+    <footer id="contact" class="reveal">
+        <div class="container footer-content">
+            <h2 class="section-title">Let’s Collaborate</h2>
+            <p class="hero-subtitle" style="margin-bottom: 10px;">
+                Whether you have an engineering challenge, trading model inquiry, audio project, or non-profit
+                effort—feel free to reach out.
+            </p>
+            <div class="social-links">
+                <a href="#" class="social-btn magnetic-target" title="GitHub"><i data-lucide="github"></i></a>
+                <a href="#" class="social-btn magnetic-target" title="LinkedIn"><i data-lucide="linkedin"></i></a>
+                <a href="#" class="social-btn magnetic-target" title="Twitter"><i data-lucide="twitter"></i></a>
+                <a href="#" class="social-btn magnetic-target" title="Email"><i data-lucide="mail"></i></a>
+            </div>
+            <p class="copyright">&copy; 2026 Mykaili's Personal Website. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Initialize Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <!-- Interactive Background Canvas Script -->
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        const particleCount = 70;
+        let mouse = { x: null, y: null, radius: 170 };
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.radius = Math.random() * 1.5 + 0.5;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+                if (mouse.x !== null && mouse.y !== null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        let force = (mouse.radius - distance) / mouse.radius;
+                        let angle = Math.atan2(dy, dx);
+                        this.x -= Math.cos(angle) * force * 3;
+                        this.y -= Math.sin(angle) * force * 3;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 140) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+
+                        let alpha = 0.08 * (1 - distance / 140);
+                        if (mouse.x !== null) {
+                            let mDx = mouse.x - particles[i].x;
+                            let mDy = mouse.y - particles[i].y;
+                            let mDist = Math.sqrt(mDx * mDx + mDy * mDy);
+                            if (mDist < 150) alpha += 0.15 * (1 - mDist / 150);
+                        }
+
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+
+    <!-- Modern Interactions & Scroll Disappear Script -->
+    <script>
+        // --- Dynamic Scroll Disappear & Shrink Logic ---
+        const scrollImg = document.getElementById('scroll-hero-img');
+        const maxScroll = 450; // Scroll threshold (in px) where the image fully vanishes
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+
+            if (scrollY <= maxScroll) {
+                const progress = scrollY / maxScroll;
+                const scale = 1 - (progress * 0.4); // Scale down from 1 to 0.6
+                const opacity = 1 - progress;         // Fade from 1 to 0
+                const blur = progress * 10;            // Blur up to 10px
+
+                scrollImg.style.transform = `scale(${scale}) translateY(${-scrollY * 0.2}px)`;
+                scrollImg.style.opacity = opacity;
+                scrollImg.style.filter = `blur(${blur}px)`;
+                scrollImg.style.pointerEvents = opacity <= 0.1 ? 'none' : 'auto';
+            } else {
+                scrollImg.style.opacity = 0;
+            }
+        });
+
+        // --- 3D Tilt Effect & Dynamic Card Glow Tracking ---
+        const tiltCards = document.querySelectorAll('.tilt-card');
+
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
+
+        // --- Magnetic Pull Effect for Buttons ---
+        const magneticTargets = document.querySelectorAll('.magnetic-target');
+
+        magneticTargets.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                el.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+            });
+
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+        // --- Intersection Observer for Scroll Reveal ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
 </body>
+
 </html>
