@@ -1,824 +1,726 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mykaili official website</title>
-    <!-- Inter Font -->
+    <title>Mykaili — By Katende Micheal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandBg: '#F8FAFC',
+                        brandCard: '#FFFFFF',
+                        brandText: '#1E293B',
+                        brandMuted: '#64748B',
+                        brandPrimary: '#4F46E5', // Slate indigo accent
+                        brandPrimaryHover: '#4338CA',
+                        brandBorder: '#E2E8F0',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        :root {
-            --bg-black: #080808;
-            --text-main: #ffffff;
-            --text-muted: #a1a1aa;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-bg-hover: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-border-hover: rgba(255, 255, 255, 0.3);
-            --glass-blur: blur(16px);
-            --radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
-        }
-
         body {
-            background-color: var(--bg-black);
-            color: var(--text-main);
+            background-color: #F8FAFC;
+            color: #1E293B;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        /* --- Canvas Background --- */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
+        /* Subtle Light Pattern Background */
+        .bg-light-pattern {
+            background-size: 32px 32px;
+            background-image:
+                radial-gradient(circle, #CBD5E1 1px, transparent 1px);
         }
 
-        /* --- Navigation --- */
-        nav {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 1100px;
-            z-index: 100;
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border);
-            border-radius: 50px;
-            padding: 12px 28px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Clean Card Styling */
+        .clean-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
 
-        .logo {
-            font-weight: 700;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        .clean-card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
         }
 
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            list-style: none;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
-            display: inline-block;
+        ::-webkit-scrollbar-track {
+            background: #F8FAFC;
         }
 
-        .nav-links a:hover {
-            color: var(--text-main);
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
         }
 
-        /* --- Hero Section & Dynamic Scroll Image --- */
-        header {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 20px 40px;
-            position: relative;
-        }
-
-        .hero-image-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 480px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            will-change: transform, opacity, filter;
-            transition: transform 0.1s linear, opacity 0.1s linear, filter 0.1s linear;
-        }
-
-        .hero-image {
-            width: 40%;
-            height: auto;
-            max-height: 550px;
-            object-fit: cover;
-            border-radius: 24px;
-            border: 0px solid var(--glass-border);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--text-muted);
-            max-width: 650px;
-            font-weight: 300;
-            margin-bottom: 35px;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 16px;
-        }
-
-        .btn {
-            padding: 12px 28px;
-            border-radius: 30px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: var(--transition);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            will-change: transform;
-        }
-
-        .btn-primary {
-            background: #ffffff;
-            color: #000000;
-            border: 1px solid #ffffff;
-        }
-
-        .btn-primary:hover {
-            background: #e4e4e7;
-        }
-
-        .btn-glass {
-            background: var(--glass-bg);
-            color: #ffffff;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: var(--glass-blur);
-        }
-
-        .btn-glass:hover {
-            background: var(--glass-bg-hover);
-            border-color: var(--glass-border-hover);
-        }
-
-        /* --- Main Layout --- */
-        .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 0 auto;
-            display: block;
-        }
-
-        section {
-            padding: 100px 0;
-        }
-
-        .section-header {
-            margin-bottom: 60px;
-        }
-
-        .section-tag {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .section-title {
-            font-size: 2.2rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        /* --- Glass Grid Cards & 3D Interactive Styles --- */
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            perspective: 1000px;
-        }
-
-        .glass-card,
-        .showcase-card {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-            padding: 30px;
-            transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.1s ease-out;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            transform-style: preserve-3d;
-            overflow: hidden;
-        }
-
-        /* Radial Mouse Tracking Glow Highlight */
-        .glass-card::before,
-        .showcase-card::before {
-            content: "";
-            position: absolute;
-            top: var(--mouse-y, -100px);
-            left: var(--mouse-x, -100px);
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            opacity: 0;
-            border-radius: 50%;
-        }
-
-        .glass-card:hover::before,
-        .showcase-card:hover::before {
-            opacity: 1;
-        }
-
-        .glass-card:hover,
-        .showcase-card:hover {
-            background: var(--glass-bg-hover);
-            border-color: var(--glass-border-hover);
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            border: 1px solid var(--glass-border);
-            transform: translateZ(20px);
-        }
-
-        .card-title,
-        .showcase-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            transform: translateZ(15px);
-        }
-
-        .card-desc,
-        .showcase-body {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            transform: translateZ(10px);
-        }
-
-        .tag-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: auto;
-            transform: translateZ(15px);
-        }
-
-        .tag {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #d4d4d8;
-        }
-
-        /* --- Showcase / Detailed Grid --- */
-        .showcase-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            perspective: 1000px;
-        }
-
-        .showcase-card {
-            padding: 32px;
-        }
-
-        .showcase-category {
-            font-size: 0.75rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            transform: translateZ(10px);
-        }
-
-        /* --- Scroll Reveal Animations --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- Contact / Footer --- */
-        footer {
-            padding: 80px 0 40px;
-            border-top: 1px solid var(--glass-border);
-            background: linear-gradient(180deg, rgba(8, 8, 8, 0) 0%, rgba(18, 18, 18, 0.8) 100%);
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 24px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 16px;
-        }
-
-        .social-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-main);
-            transition: var(--transition);
-            text-decoration: none;
-            will-change: transform;
-        }
-
-        .social-btn:hover {
-            background: #ffffff;
-            color: #000000;
-        }
-
-        .copyright {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* --- Responsive Adjustments --- */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            header {
-                padding-top: 100px;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn {
-                justify-content: center;
-            }
-
-            .hero-image-wrapper {
-                max-width: 320px;
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
         }
     </style>
 </head>
 
-<body>
+<body
+    class="relative bg-light-pattern min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
 
-    <!-- Interactive Particle Background Canvas -->
-    <canvas id="bg-canvas"></canvas>
+    <!-- Navigation Bar -->
+    <header
+        class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 py-4 px-6 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div
+                    class="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-xl shadow-md shadow-indigo-600/20 group-hover:scale-105 transition-transform duration-300">
+                    M
+                </div>
+                <span
+                    class="text-xl font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
+                    Mykaili<span class="text-indigo-600">.</span>
+                </span>
+            </a>
 
-    <!-- Navigation Header -->
-    <nav>
-        <div class="logo">Mykaili</div>
-        <ul class="nav-links">
-            <li><a href="#store" class="magnetic-target">Store</a></li>
-            <li><a href="#music" class="magnetic-target">Music</a></li>
-            <li><a href="#work" class="magnetic-target">Work</a></li>
-            <li><a href="#markets" class="magnetic-target">Forex</a></li>
-        </ul>
-        <a href="#contact" class="btn btn-glass magnetic-target" style="padding: 8px 18px; font-size: 0.85rem;">Let's
-            Talk</a>
-    </nav>
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                <a href="#home" class="hover:text-indigo-600 transition-colors">Home</a>
+                <a href="#values" class="hover:text-indigo-600 transition-colors">Values</a>
+                <a href="#highlights" class="hover:text-indigo-600 transition-colors">Highlights</a>
+                <a href="#philosophy" class="hover:text-indigo-600 transition-colors">Philosophy</a>
+                <a href="#contact" class="hover:text-indigo-600 transition-colors">Contact</a>
+            </nav>
 
-    <div class="container">
-        <!-- Hero Section -->
-        <header id="about">
-            <div class="hero-image-wrapper" id="scroll-hero-img">
-                <img src="mykaili.github.io/IMG_9952.png" alt="Katende Micheal" class="hero-image">
-            </div>
-            <p class="hero-subtitle reveal">
-                A personal space showcasing specialized initiatives in software systems, financial market dynamics,
-                audio production, and social impact.
-            </p>
-            <div class="cta-buttons reveal">
-                <a href="#work" class="btn btn-primary magnetic-target">
-                    View Portfolio <i data-lucide="arrow-right"></i>
+            <!-- CTA Header Button -->
+            <div class="hidden md:block">
+                <a href="#contact"
+                    class="px-5 py-2.5 rounded-lg text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 transition-all duration-300">
+                    Get in Touch
                 </a>
-                <a href="#fields" class="btn btn-glass magnetic-target">
-                    Explore Fields
-                </a>
-            </div>
-        </header>
-
-        <!-- Fields / Pillars Section -->
-        <section id="fields" class="reveal">
-            <div class="section-header">
-                <span class="section-tag">Core Disciplines</span>
-                <h2 class="section-title">Areas of Operation</h2>
             </div>
 
-            <div class="grid-4">
-                <!-- Computing -->
-                <div class="glass-card tilt-card">
-                    <div>
-                        <div class="card-icon">
-                            <i data-lucide="code-2"></i>
-                        </div>
-                        <h3 class="card-title">Computing & Tech</h3>
-                        <p class="card-desc">
-                            Building clean front-end interfaces, custom web systems, smart home automation networks, and
-                            practical security architecture.
-                        </p>
-                    </div>
-                    <div class="tag-container">
-                        <span class="tag">Web Dev</span>
-                        <span class="tag">System Design</span>
-                        <span class="tag">Cybersecurity</span>
-                    </div>
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-600 hover:text-slate-900 focus:outline-none p-2"
+                aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden md:hidden pt-4 pb-2 px-2 border-t border-slate-200 mt-3 flex flex-col space-y-2 text-sm font-medium text-slate-600 bg-white">
+            <a href="#home" class="mobile-link hover:text-indigo-600 py-2 px-3 rounded-lg hover:bg-slate-50">Home</a>
+            <a href="#values" class="mobile-link hover:text-indigo-600 py-2 px-3 rounded-lg hover:bg-slate-50">Core
+                Values</a>
+            <a href="#highlights"
+                class="mobile-link hover:text-indigo-600 py-2 px-3 rounded-lg hover:bg-slate-50">Highlights</a>
+            <a href="#philosophy"
+                class="mobile-link hover:text-indigo-600 py-2 px-3 rounded-lg hover:bg-slate-50">Philosophy</a>
+            <a href="#contact"
+                class="mobile-link hover:text-indigo-600 py-2 px-3 rounded-lg hover:bg-slate-50">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <main class="relative z-10 pt-20">
+
+        <!-- HERO SECTION -->
+        <section id="about" class="min-h-[80vh] flex items-center justify-center px-6 relative py-16">
+            <div class="max-w-4xl mx-auto text-center space-y-8">
+
+                <!-- Tag Badge -->
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                    Mykaili by Katende Micheal
                 </div>
 
-                <!-- Finance -->
-                <div class="glass-card tilt-card">
-                    <div>
-                        <div class="card-icon">
-                            <i data-lucide="trending-up"></i>
-                        </div>
-                        <h3 class="card-title">Finance & Markets</h3>
-                        <p class="card-desc">
-                            Analyzing technical market structures, formulating mathematically disciplined risk
-                            strategies, and evaluating asset behavior.
-                        </p>
-                    </div>
-                    <div class="tag-container">
-                        <span class="tag">Technical Analysis</span>
-                        <span class="tag">Risk Management</span>
-                        <span class="tag">Macro Economics</span>
-                    </div>
+                <!-- Main Headline -->
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-tight">
+                    Driven by Curiosity, <br class="hidden sm:inline" />
+                    <span class="text-indigo-600">Defined by Purpose.</span>
+                </h1>
+
+                <!-- Subtitle / Introduction -->
+                <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
+                    Hello, this is <strong class="text-slate-900 font-semibold">Mykaili by Katende Micheal</strong>. A
+                    thoughtful brand for your digital
+                    systems, sound, autonomous mechanics, and impactful visual media made with commitment to precision
+                    and continuous growth.
+                </p>
+
+                <!-- Hero CTA Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                    <a href="#highlights"
+                        class="w-full sm:w-auto px-7 py-3.5 rounded-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-all duration-200">
+                        Explore Work <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                    <a href="https://mykaili.xyz/katendeMicheal"
+                        class="w-full sm:w-auto px-7 py-3.5 rounded-lg text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 transition-all duration-200">
+                        Meet Katende Micheal
+                    </a>
                 </div>
 
-                <!-- Entertainment -->
-                <div class="glass-card tilt-card">
-                    <div>
-                        <div class="card-icon">
-                            <i data-lucide="music"></i>
-                        </div>
-                        <h3 class="card-title">Entertainment & Music</h3>
-                        <p class="card-desc">
-                            Crafting melodic trap arrangements, sound design, chord theory, and digital audio production
-                            within modern DAWs.
-                        </p>
-                    </div>
-                    <div class="tag-container">
-                        <span class="tag">Audio Production</span>
-                        <span class="tag">FL Studio</span>
-                        <span class="tag">Arrangement</span>
-                    </div>
+            </div>
+        </section>
+
+        <!-- CORE VALUES SECTION -->
+        <section id="values" class="py-20 px-6 bg-white border-y border-slate-200">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600">Foundations</h2>
+                    <p class="text-3xl font-extrabold text-slate-900">Core Principles & Values</p>
+                    <p class="text-slate-600 text-sm">The standards and values that steer my approach to work, projects,
+                        and collaboration.</p>
                 </div>
 
-                <!-- Charity -->
-                <div class="glass-card tilt-card">
-                    <div>
-                        <div class="card-icon">
-                            <i data-lucide="heart"></i>
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+
+                    <!-- Value 1 -->
+                    <div class="clean-card p-6 rounded-xl space-y-3">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-shield-halved"></i>
                         </div>
-                        <h3 class="card-title">Charity & Impact</h3>
-                        <p class="card-desc">
-                            Leveraging digital platforms, grassroots initiatives, and technical tools to empower
-                            communities and support local causes.
+                        <h3 class="text-base font-bold text-slate-900">Integrity</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Doing honest, reliable work with complete transparency and dedication in every endeavor.
                         </p>
                     </div>
-                    <div class="tag-container">
-                        <span class="tag">Community Action</span>
-                        <span class="tag">Non-Profit Work</span>
-                        <span class="tag">Social Impact</span>
+
+                    <!-- Value 2 -->
+                    <div class="clean-card p-6 rounded-xl space-y-3">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900">Innovation</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Finding thoughtful, modern solutions to complex problems through creative thinking.
+                        </p>
                     </div>
+
+                    <!-- Value 3 -->
+                    <div class="clean-card p-6 rounded-xl space-y-3">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900">Precision</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Focusing on detail, quality, and craftsmanship across technology, audio, and design.
+                        </p>
+                    </div>
+
+                    <!-- Value 4 -->
+                    <div class="clean-card p-6 rounded-xl space-y-3">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-palette"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900">Creativity</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Bringing artistic expression and balanced visual/sonic identity to everything built.
+                        </p>
+                    </div>
+
+                    <!-- Value 5 -->
+                    <div class="clean-card p-6 rounded-xl space-y-3">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900">Growth</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Embracing continuous learning, adaptability, and compounding knowledge every day.
+                        </p>
+                    </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- Featured Projects / Case Studies -->
-        <section id="work" class="reveal">
-            <div class="section-header">
-                <span class="section-tag">Case Studies</span>
-                <h2 class="section-title">Featured Highlights</h2>
-            </div>
+        <!-- HIGHLIGHTS / PROJECTS SECTION -->
+        <section id="highlights" class="py-20 px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div>
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-1">Portfolio &
+                            Endeavors</h2>
+                        <p class="text-3xl font-extrabold text-slate-900">Featured Highlights</p>
+                    </div>
 
-            <div class="showcase-grid">
-                <!-- Project 1 -->
-                <div class="showcase-card tilt-card">
-                    <div class="showcase-category">Computing & Automation</div>
-                    <h3 class="showcase-title">Centralized Smart Home Network</h3>
-                    <p class="showcase-body">
-                        Engineered an automated local controller running on mini-PC architecture to centralize bandwidth
-                        optimization, network security monitoring, and smart devices.
-                    </p>
-                    <div class="tag-container">
-                        <span class="tag">Networking</span>
-                        <span class="tag">IoT</span>
-                        <span class="tag">System Design</span>
+                    <!-- Category Filter Tabs -->
+                    <div
+                        class="flex flex-wrap gap-2 p-1 bg-slate-200/60 rounded-xl text-xs font-medium border border-slate-300/60">
+                        <button onclick="filterDomain('all')"
+                            class="domain-btn px-4 py-2 rounded-lg text-slate-900 bg-white shadow-sm font-semibold transition-all"
+                            data-domain="all">All Domains</button>
+                        <button onclick="filterDomain('software')"
+                            class="domain-btn px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all"
+                            data-domain="software">Software & Systems</button>
+                        <button onclick="filterDomain('music')"
+                            class="domain-btn px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all"
+                            data-domain="music">Music Production</button>
+                        <button onclick="filterDomain('visual')"
+                            class="domain-btn px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all"
+                            data-domain="visual">Visuals & Media</button>
+                        <button onclick="filterDomain('aviation')"
+                            class="domain-btn px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all"
+                            data-domain="aviation">Aviation & Logistics</button>
                     </div>
                 </div>
 
-                <!-- Project 2 -->
-                <div class="showcase-card tilt-card">
-                    <div class="showcase-category">Quantitative Finance</div>
-                    <h3 class="showcase-title">Market Structure & Compounding Framework</h3>
-                    <p class="showcase-body">
-                        Developed structured compounding plans and multi-timeframe liquidity analysis techniques
-                        tailored for volatile financial instruments.
-                    </p>
-                    <div class="tag-container">
-                        <span class="tag">Chart Analysis</span>
-                        <span class="tag">Capital Growth</span>
-                        <span class="tag">XAUUSD</span>
-                    </div>
-                </div>
+                <!-- Projects Grid -->
+                <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <!-- Project 3 -->
-                <div class="showcase-card tilt-card">
-                    <div class="showcase-category">Digital Audio</div>
-                    <h3 class="showcase-title">Melodic Trap Instrumental Production</h3>
-                    <p class="showcase-body">
-                        Designed complex chord progressions, custom synthesizer patches, and vocal chop arrangements
-                        targeting modern melodic soundscapes.
-                    </p>
-                    <div class="tag-container">
-                        <span class="tag">Sound Design</span>
-                        <span class="tag">Composition</span>
-                        <span class="tag">Mixing</span>
+                    <!-- Card 1: Software -->
+                    <div class="portfolio-item domain-software clean-card rounded-xl overflow-hidden group">
+                        <div
+                            class="h-44 bg-slate-100 border-b border-slate-200 relative flex items-center justify-center p-6">
+                            <i
+                                class="fa-solid fa-code text-5xl text-slate-400 group-hover:text-indigo-600 group-hover:scale-105 transition-all duration-300"></i>
+                            <span
+                                class="absolute top-3 right-3 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white text-slate-700 border border-slate-200 shadow-sm">
+                                Software
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-2.5">
+                            <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                Distributed Cloud Platform</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Software engineered for your needs, cloud monitoring, real-time data sync and
+                                microservices management.
+                            </p>
+                            <div class="flex items-center gap-2 text-[11px] font-medium text-slate-500 pt-2">
+                                <span class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Python</span>
+                                <span class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Andriod</span>
+                                <span
+                                    class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">JavaScript</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Project 4 -->
-                <div class="showcase-card tilt-card">
-                    <div class="showcase-category">Charity & Community</div>
-                    <h3 class="showcase-title">Save & Heal Digital Platform</h3>
-                    <p class="showcase-body">
-                        Assisted in establishing, managing, and maintaining digital web infrastructure to facilitate
-                        community engagement and support outreach operations.
-                    </p>
-                    <div class="tag-container">
-                        <span class="tag">Web Hosting</span>
-                        <span class="tag">Outreach</span>
-                        <span class="tag">Non-Profit</span>
+                    <!-- Card 2: Music -->
+                    <div class="portfolio-item domain-music clean-card rounded-xl overflow-hidden group">
+                        <div
+                            class="h-44 bg-slate-100 border-b border-slate-200 relative flex items-center justify-center p-6">
+                            <i
+                                class="fa-solid fa-music text-5xl text-slate-400 group-hover:text-indigo-600 group-hover:scale-105 transition-all duration-300"></i>
+                            <span
+                                class="absolute top-3 right-3 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white text-slate-700 border border-slate-200 shadow-sm">
+                                Sound
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-2.5">
+                            <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                Audio Mixing & Mastering</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                A collection of original instrumental soundscapes, audio mixes, and master tracks
+                                produced for multimedia projects.
+                            </p>
+                            <div class="flex items-center gap-2 text-[11px] font-medium text-slate-500 pt-2">
+                                <span class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Audio
+                                    Engineering</span>
+                                <span class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">DAW</span>
+                                <span
+                                    class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Acoustics</span>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Card 3: Visual -->
+                    <div class="portfolio-item domain-visual clean-card rounded-xl overflow-hidden group">
+                        <div
+                            class="h-44 bg-slate-100 border-b border-slate-200 relative flex items-center justify-center p-6">
+                            <i
+                                class="fa-solid fa-vector-square text-5xl text-slate-400 group-hover:text-indigo-600 group-hover:scale-105 transition-all duration-300"></i>
+                            <span
+                                class="absolute top-3 right-3 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white text-slate-700 border border-slate-200 shadow-sm">
+                                Visuals
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-2.5">
+                            <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                Minimalist Brand System</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Clean, functional identity suites, design systems, and user interfaces crafted for
+                                clarity and legibility.
+                            </p>
+                            <div class="flex items-center gap-2 text-[11px] font-medium text-slate-500 pt-2">
+                                <span class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Figma</span>
+                                <span class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">UI/UX</span>
+                                <span class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Brand
+                                    Guidelines</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Aviation -->
+                    <div class="portfolio-item domain-aviation clean-card rounded-xl overflow-hidden group">
+                        <div
+                            class="h-44 bg-slate-100 border-b border-slate-200 relative flex items-center justify-center p-6">
+                            <i
+                                class="fa-solid fa-plane text-5xl text-slate-400 group-hover:text-indigo-600 group-hover:scale-105 transition-all duration-300"></i>
+                            <span
+                                class="absolute top-3 right-3 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white text-slate-700 border border-slate-200 shadow-sm">
+                                Logistics
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-2.5">
+                            <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                Freight Forwarding & Logistics</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">Shipping across boarders through
+                                worry-free booking and custom clearance with real-time milestone tracking</p>
+                            <div class="flex items-center gap-2 text-[11px] font-medium text-slate-500 pt-2">
+                                <span
+                                    class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Shipping</span>
+                                <span
+                                    class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Navigation</span>
+                                <span class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Customs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Trading -->
+                    <div class="portfolio-item domain-software clean-card rounded-xl overflow-hidden group">
+                        <div
+                            class="h-44 bg-slate-100 border-b border-slate-200 relative flex items-center justify-center p-6">
+                            <i
+                                class="fa-solid fa-terminal text-5xl text-slate-400 group-hover:text-indigo-600 group-hover:scale-105 transition-all duration-300"></i>
+                            <span
+                                class="absolute top-3 right-3 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white text-slate-700 border border-slate-200 shadow-sm">
+                                Markets
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-2.5">
+                            <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                Market Analysis Utilities</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Advanced Expert Options and automated scripts created to streamline your trading edge
+                            </p>
+                            <div class="flex items-center gap-2 text-[11px] font-medium text-slate-500 pt-2">
+                                <span
+                                    class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">MetaTrader</span>
+                                <span
+                                    class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Automation</span>
+                                <span class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">XAUUSD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Visual -->
+                    <div class="portfolio-item domain-visual clean-card rounded-xl overflow-hidden group">
+                        <div
+                            class="h-44 bg-slate-100 border-b border-slate-200 relative flex items-center justify-center p-6">
+                            <i
+                                class="fa-solid fa-camera text-5xl text-slate-400 group-hover:text-indigo-600 group-hover:scale-105 transition-all duration-300"></i>
+                            <span
+                                class="absolute top-3 right-3 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white text-slate-700 border border-slate-200 shadow-sm">
+                                Visuals
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-2.5">
+                            <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                Digital Photography Series</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Minimalist landscape and architectural photography capturing structural symmetry and
+                                natural light.
+                            </p>
+                            <div class="flex items-center gap-2 text-[11px] font-medium text-slate-500 pt-2">
+                                <span
+                                    class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Photography</span>
+                                <span
+                                    class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Lightroom</span>
+                                <span class="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Film</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
-    </div>
 
-    <!-- Footer / Contact -->
-    <footer id="contact" class="reveal">
-        <div class="container footer-content">
-            <h2 class="section-title">Let’s Collaborate</h2>
-            <p class="hero-subtitle" style="margin-bottom: 10px;">
-                Whether you have an engineering challenge, trading model inquiry, audio project, or non-profit
-                effort—feel free to reach out.
-            </p>
-            <div class="social-links">
-                <a href="#" class="social-btn magnetic-target" title="GitHub"><i data-lucide="github"></i></a>
-                <a href="#" class="social-btn magnetic-target" title="LinkedIn"><i data-lucide="linkedin"></i></a>
-                <a href="#" class="social-btn magnetic-target" title="Twitter"><i data-lucide="twitter"></i></a>
-                <a href="#" class="social-btn magnetic-target" title="Email"><i data-lucide="mail"></i></a>
+        <!-- PHILOSOPHY BLOCKQUOTE SECTION -->
+        <section id="philosophy" class="py-20 px-6 bg-white border-y border-slate-200">
+            <div class="max-w-4xl mx-auto text-center space-y-6">
+                <div
+                    class="w-12 h-12 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-quote-left"></i>
+                </div>
+
+                <blockquote class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
+                    "Simplicity is about subtracting the obvious and adding the meaningful. Excellence comes from
+                    consistent focus on every detail."
+                </blockquote>
+
+                <p class="text-sm font-semibold text-indigo-600 uppercase tracking-widest">— Katende Micheal</p>
             </div>
-            <p class="copyright">&copy; 2026 Mykaili's Personal Website. All rights reserved.</p>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="py-20 px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600">Get in Touch</h2>
+                    <p class="text-3xl font-extrabold text-slate-900">Let’s Connect</p>
+                    <p class="text-slate-600 text-sm">Have a project, collaboration, or question? Send a message below.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+                    <!-- Contact Details & Socials -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="clean-card p-8 rounded-xl space-y-6">
+                            <h3 class="text-lg font-bold text-slate-900">Direct Contact</h3>
+
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-500">Email</div>
+                                    <a href="mailto:contact@mykaili.com"
+                                        class="text-sm font-semibold text-slate-900 hover:text-indigo-600 transition-colors">saint@mykaili.xyz
+                                        <p>katende@healquest.org</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-500">Availability</div>
+                                    <div class="text-sm font-semibold text-slate-900">Open for Global & Remote Projects
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-500">Response Window</div>
+                                    <div class="text-sm font-semibold text-slate-900">1 to 2 Business Days</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media Links -->
+                        <div class="clean-card p-8 rounded-xl space-y-4">
+                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Social Channels</h4>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="https://instagram.com/mykaili" target="_blank" rel="noopener noreferrer"
+                                    class="p-3 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-pink-600 rounded-full transition-all duration-200 transform hover:scale-110"
+                                    aria-label="Instagram">
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                    </svg>
+                                </a>
+                                <!-- X (formerly Twitter) -->
+                                <a href="https://x.com/_mykaili" target="_blank" rel="noopener noreferrer"
+                                    class="p-3 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-black rounded-full transition-all duration-200 transform hover:scale-110"
+                                    aria-label="X">
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                        <path
+                                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                    </svg>
+                                </a>
+
+                                <!-- WhatsApp -->
+                                <a href="https://wa.me/256776930812" target="_blank" rel="noopener noreferrer"
+                                    class="p-3 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-emerald-600 rounded-full transition-all duration-200 transform hover:scale-110"
+                                    aria-label="WhatsApp">
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                        <path
+                                            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                                    </svg>
+                                </a>
+
+                                <!-- TikTok -->
+                                <a href="https://tiktok.com/@mykaili" target="_blank" rel="noopener noreferrer"
+                                    class="p-3 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 rounded-full transition-all duration-200 transform hover:scale-110"
+                                    aria-label="TikTok">
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.98-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+                                    </svg>
+                                </a>
+
+                                <!-- Facebook -->
+                                <a href="https://facebook.com/mykaili" target="_blank" rel="noopener noreferrer"
+                                    class="p-3 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-blue-600 rounded-full transition-all duration-200 transform hover:scale-110"
+                                    aria-label="Facebook">
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                        <path
+                                            d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                                    </svg>
+                                </a>
+                                <!-- Telegram -->
+                                <a href="https://t.me/mykaili" target="_blank" rel="noopener noreferrer"
+                                    class="p-3 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-sky-500 rounded-full transition-all duration-200 transform hover:scale-110"
+                                    aria-label="Telegram">
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                        <path
+                                            d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="lg:col-span-7">
+                        <form id="contact-form" onsubmit="handleFormSubmit(event)"
+                            class="clean-card p-8 rounded-xl space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-semibold text-slate-700">Name</label>
+                                    <input type="text" required placeholder="Your Full Name"
+                                        class="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-indigo-600 transition-all">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-semibold text-slate-700">Email Address</label>
+                                    <input type="email" required placeholder="name@example.com"
+                                        class="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-indigo-600 transition-all">
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-slate-700">Subject</label>
+                                <input type="text" required placeholder="Project / General Inquiry"
+                                    class="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-indigo-600 transition-all">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-slate-700">Message</label>
+                                <textarea rows="4" required placeholder="How can I help you?"
+                                    class="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-indigo-600 transition-all resize-none"></textarea>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full py-3 rounded-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-all duration-200 flex items-center justify-center gap-2">
+                                Send Message <i class="fa-solid fa-paper-plane text-xs"></i>
+                            </button>
+
+                            <!-- Success Feedback Banner -->
+                            <div id="form-feedback"
+                                class="hidden text-center text-xs py-3 px-4 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                <i class="fa-solid fa-circle-check mr-1 text-emerald-600"></i> Thank you! Your message
+                                has been sent successfully.
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-8 px-6 relative z-10">
+        <div
+            class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-900 tracking-tight">Mykaili</span>
+                <span>&copy; <span id="year"></span> All rights reserved.</span>
+            </div>
+            <div class="flex items-center gap-6 font-medium">
+                <a href="#about" class="hover:text-slate-900 transition-colors">About</a>
+                <a href="#values" class="hover:text-slate-900 transition-colors">Values</a>
+                <a href="#highlights" class="hover:text-slate-900 transition-colors">Highlights</a>
+                <a href="#contact" class="hover:text-slate-900 transition-colors">Contact</a>
+            </div>
         </div>
     </footer>
 
-    <!-- Initialize Icons -->
+    <!-- INTERACTIVE JAVASCRIPT -->
     <script>
-        lucide.createIcons();
-    </script>
+        // Set dynamic copyright year
+        document.getElementById('year').innerText = new Date().getFullYear();
 
-    <!-- Interactive Background Canvas Script -->
-    <script>
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
+        // Mobile Menu Toggle Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
 
-        let particles = [];
-        const particleCount = 70;
-        let mouse = { x: null, y: null, radius: 170 };
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
 
-        window.addEventListener('mouseleave', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.radius = Math.random() * 1.5 + 0.5;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.alpha = Math.random() * 0.5 + 0.2;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-
-                if (mouse.x !== null && mouse.y !== null) {
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < mouse.radius) {
-                        let force = (mouse.radius - distance) / mouse.radius;
-                        let angle = Math.atan2(dy, dx);
-                        this.x -= Math.cos(angle) * force * 3;
-                        this.y -= Math.sin(angle) * force * 3;
-                    }
-                }
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 140) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-
-                        let alpha = 0.08 * (1 - distance / 140);
-                        if (mouse.x !== null) {
-                            let mDx = mouse.x - particles[i].x;
-                            let mDy = mouse.y - particles[i].y;
-                            let mDist = Math.sqrt(mDx * mDx + mDy * mDy);
-                            if (mDist < 150) alpha += 0.15 * (1 - mDist / 150);
-                        }
-
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-                        ctx.lineWidth = 0.8;
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-    </script>
-
-    <!-- Modern Interactions & Scroll Disappear Script -->
-    <script>
-        // --- Dynamic Scroll Disappear & Shrink Logic ---
-        const scrollImg = document.getElementById('scroll-hero-img');
-        const maxScroll = 450; // Scroll threshold (in px) where the image fully vanishes
-
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-
-            if (scrollY <= maxScroll) {
-                const progress = scrollY / maxScroll;
-                const scale = 1 - (progress * 0.4); // Scale down from 1 to 0.6
-                const opacity = 1 - progress;         // Fade from 1 to 0
-                const blur = progress * 10;            // Blur up to 10px
-
-                scrollImg.style.transform = `scale(${scale}) translateY(${-scrollY * 0.2}px)`;
-                scrollImg.style.opacity = opacity;
-                scrollImg.style.filter = `blur(${blur}px)`;
-                scrollImg.style.pointerEvents = opacity <= 0.1 ? 'none' : 'auto';
-            } else {
-                scrollImg.style.opacity = 0;
-            }
-        });
-
-        // --- 3D Tilt Effect & Dynamic Card Glow Tracking ---
-        const tiltCards = document.querySelectorAll('.tilt-card');
-
-        tiltCards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -10;
-                const rotateY = ((x - centerX) / centerX) * 10;
-
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
             });
         });
 
-        // --- Magnetic Pull Effect for Buttons ---
-        const magneticTargets = document.querySelectorAll('.magnetic-target');
+        // Highlights Domain Filtering
+        function filterDomain(domain) {
+            const buttons = document.querySelectorAll('.domain-btn');
+            const items = document.querySelectorAll('.portfolio-item');
 
-        magneticTargets.forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                const rect = el.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-
-                el.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
-            });
-
-            el.addEventListener('mouseleave', () => {
-                el.style.transform = 'translate(0px, 0px)';
-            });
-        });
-
-        // --- Intersection Observer for Scroll Reveal ---
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
+            // Active Tab Styles
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-domain') === domain) {
+                    btn.classList.add('text-slate-900', 'bg-white', 'shadow-sm', 'font-semibold');
+                    btn.classList.remove('text-slate-600');
+                } else {
+                    btn.classList.remove('text-slate-900', 'bg-white', 'shadow-sm', 'font-semibold');
+                    btn.classList.add('text-slate-600');
                 }
             });
-        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            // Filter Projects Grid
+            items.forEach(item => {
+                if (domain === 'all' || item.classList.contains(`domain-${domain}`)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Contact Form Submission Feedback
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const feedback = document.getElementById('form-feedback');
+            feedback.classList.remove('hidden');
+            event.target.reset();
+
+            setTimeout(() => {
+                feedback.classList.add('hidden');
+            }, 6000);
+        }
     </script>
 </body>
 
